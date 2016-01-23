@@ -13,6 +13,7 @@ function GridManager(width, height) {
     this.guessedBlock =  new PreviewTile(1400,1200);
     this.goalBlock = new GoalTile(1600,1200);
     this.scoreManager = new ScoreManager();
+
     this.orig = {
         x: (game.width / 2) - (width * this.TILESIZE) / 2 + this.TILESIZE / 2
         , y: this.TILESIZE / 2 +200
@@ -43,6 +44,7 @@ function GridManager(width, height) {
     }
     this.selectedColorsPreview.x = this.tiles[0].x - this.tiles[0].width/2;
 
+    this.TimerManager = new TimerManager(100,this.tiles[0].x - this.tiles[0].width/2,0,width*(this.TILESIZE+this.margin));
 
     this.mouseDown = false;
 
@@ -52,6 +54,8 @@ function GridManager(width, height) {
     game.input.onUp.add(function () {
         this.mouseDown = false;
     }, this);
+
+
 
 };
 
