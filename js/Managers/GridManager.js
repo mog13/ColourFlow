@@ -10,7 +10,7 @@ function GridManager(width, height) {
     this.tiles = [];
     this.selectedTiles = [];
     this.selectedColorsPreview = new SelectedColorBlock(800,950,8,32);
-
+    this.guessedBlock =  new PreviewTile(1400,1000);
     this.orig = {
         x: (game.width / 2) - (width * this.TILESIZE) / 2 + this.TILESIZE / 2
         , y: this.TILESIZE / 2
@@ -19,8 +19,10 @@ function GridManager(width, height) {
 
     this.states = {
         SELECTING: 0,
-        CLEARING: 1,
-        IDLE: 2
+        MERGING:1,
+        COMPARING:2,
+        CLEARING: 3,
+        IDLE: 4
     };
 
     this.currentState = this.states.IDLE;
@@ -62,6 +64,14 @@ GridManager.prototype.Update = function () {
         case(this.states.SELECTING):
             this.UpdateWhenSelecting();
             break;
+        case(this.states.MERGING):
+            if(this.selectedColorsPreview.UpdateMerging(this.guessedBlock)<0){
+                this.currentState = this.states.COMPARING;
+            }
+            break;
+        case(this.states.COMPARING):
+
+            break;
         case(this.states.CLEARING):
             this.tiles.forEach(function (tile) {
                 tile.selected = false;
@@ -77,7 +87,7 @@ GridManager.prototype.Update = function () {
 
 GridManager.prototype.UpdateWhenSelecting = function () {
     if (!this.mouseDown) {
-        this.currentState = this.states.CLEARING;
+        this.currentState = this.states.MERGING;
     }
     var grid = this;
     this.tiles.forEach(function (tile) {
@@ -90,7 +100,7 @@ GridManager.prototype.UpdateWhenSelecting = function () {
                    grid.selectedTiles.push(tile);
                    grid.selectedColorsPreview.Add(tile)
                }
-               // If weve selected the previous one then go back
+               // If we've selected the previous one then go back
                else if(grid.selectedTiles.length >1 && tile === grid.selectedTiles[grid.selectedTiles.length-2]) {
                    grid.selectedTiles[grid.selectedTiles.length-1].selected = false;
                    grid.selectedTiles.splice(grid.selectedTiles.length-1,1);
