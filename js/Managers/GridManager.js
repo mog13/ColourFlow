@@ -9,6 +9,8 @@ function GridManager(width, height) {
 
     this.tiles = [];
     this.selectedTiles = [];
+    this.selectedColorsPreview = new SelectedColorBlock(800,950,8,32);
+
     this.orig = {
         x: (game.width / 2) - (width * this.TILESIZE) / 2 + this.TILESIZE / 2
         , y: this.TILESIZE / 2
@@ -35,6 +37,8 @@ function GridManager(width, height) {
             this.tiles.push(new GameTile(this.orig.x + (x * ( this.TILESIZE + this.margin)), this.orig.y + (y * (this.TILESIZE + this.margin))));
         }
     }
+    this.selectedColorsPreview.x = this.tiles[0].x - this.tiles[0].width/2;
+
 
     this.mouseDown = false;
 
@@ -45,7 +49,6 @@ function GridManager(width, height) {
         this.mouseDown = false;
     }, this);
 
-    console.log(game);
 };
 
 GridManager.prototype.Update = function () {
@@ -64,6 +67,7 @@ GridManager.prototype.Update = function () {
                 tile.selected = false;
             });
             this.selectedTiles = [];
+            this.selectedColorsPreview.Clear();
             this.currentState = this.states.IDLE;
             break;
     }
@@ -84,12 +88,13 @@ GridManager.prototype.UpdateWhenSelecting = function () {
                if(!tile.selected) {
                    tile.selected = true;
                    grid.selectedTiles.push(tile);
+                   grid.selectedColorsPreview.Add(tile)
                }
                // If weve selected the previous one then go back
                else if(grid.selectedTiles.length >1 && tile === grid.selectedTiles[grid.selectedTiles.length-2]) {
-                   console.log('here');
                    grid.selectedTiles[grid.selectedTiles.length-1].selected = false;
-                    grid.selectedTiles.splice(grid.selectedTiles.length-1,1);
+                   grid.selectedTiles.splice(grid.selectedTiles.length-1,1);
+                   grid.selectedColorsPreview.RemovePrevious();
                }
             }
 

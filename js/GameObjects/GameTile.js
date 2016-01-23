@@ -13,6 +13,7 @@ GameTile = function ( x, y) {
     this.color = Phaser.Color.getRandomColor();
     this.tint = this.color;
     this.selected = false;
+    this.alpha = 0;
     game.add.existing(this);
 };
 
@@ -31,10 +32,10 @@ GameTile.prototype.collided = function (x, y) {
 
 GameTile.prototype.update = function () {
     if(this.selected){
-        this.alpha=0.2;
+        game.add.tween(this).to({alpha:0.2}, 700 , Phaser.Easing.Exponential.Out, true);
     }
     else{
-        this.alpha = 1;
+        game.add.tween(this).to({alpha:1}, 700 , Phaser.Easing.Exponential.Out, true);
     }
 };
 
