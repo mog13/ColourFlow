@@ -85,7 +85,14 @@ GridManager.prototype.UpdateWhenSelecting = function () {
                    tile.selected = true;
                    grid.selectedTiles.push(tile);
                }
+               // If weve selected the previous one then go back
+               else if(grid.selectedTiles.length >1 && tile === grid.selectedTiles[grid.selectedTiles.length-2]) {
+                   console.log('here');
+                   grid.selectedTiles[grid.selectedTiles.length-1].selected = false;
+                    grid.selectedTiles.splice(grid.selectedTiles.length-1,1);
+               }
             }
+
         }
     });
 };
