@@ -9,7 +9,6 @@ var gridManager;
 Main.prototype = {
     create: function () {
         this.gridManager = new GridManager(7,7);
-        console.log(this.gridManager);
     },
 
 

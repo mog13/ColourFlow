@@ -32,10 +32,10 @@ GameTile.prototype.collided = function (x, y) {
 
 GameTile.prototype.update = function () {
     if(this.selected){
-        game.add.tween(this).to({alpha:0.2}, 700 , Phaser.Easing.Exponential.Out, true);
+        game.add.tween(this).to({alpha:0.2}, 500 , Phaser.Easing.Exponential.Out, true);
     }
     else{
-        game.add.tween(this).to({alpha:1}, 700 , Phaser.Easing.Exponential.Out, true);
+        game.add.tween(this).to({alpha:1}, 500 , Phaser.Easing.Exponential.Out, true);
     }
 };
 

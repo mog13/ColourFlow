@@ -9,11 +9,13 @@ function GridManager(width, height) {
 
     this.tiles = [];
     this.selectedTiles = [];
-    this.selectedColorsPreview = new SelectedColorBlock(800,950,8,32);
-    this.guessedBlock =  new PreviewTile(1400,1000);
+    this.selectedColorsPreview = new SelectedColorBlock(800,1150,8,32);
+    this.guessedBlock =  new PreviewTile(1400,1200);
+    this.goalBlock = new GoalTile(1600,1200);
+    this.scoreManager = new ScoreManager();
     this.orig = {
         x: (game.width / 2) - (width * this.TILESIZE) / 2 + this.TILESIZE / 2
-        , y: this.TILESIZE / 2
+        , y: this.TILESIZE / 2 +200
     };
 
 
@@ -55,6 +57,9 @@ function GridManager(width, height) {
 
 GridManager.prototype.Update = function () {
 
+    //generic updating behaviour
+    this.scoreManager.Update();
+
     switch (this.currentState) {
         case(this.states.IDLE):
             if (this.mouseDown) {
@@ -70,7 +75,9 @@ GridManager.prototype.Update = function () {
             }
             break;
         case(this.states.COMPARING):
-
+            this.goalBlock.GenNewColor();
+            this.scoreManager.AddScore(this.guessedBlock.x, this.guessedBlock.y,50);
+            this.currentState = this.states.CLEARING;
             break;
         case(this.states.CLEARING):
             this.tiles.forEach(function (tile) {
