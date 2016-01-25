@@ -89,6 +89,7 @@ GridManager.prototype.Update = function () {
             });
             this.selectedTiles = [];
             this.selectedColorsPreview.Clear();
+            this.guessedBlock.ClearCols();
             this.currentState = this.states.IDLE;
             break;
     }
